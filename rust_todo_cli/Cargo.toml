@@ -1,7 +1,6 @@
 [package]
-name = "compress_proj1"
+name = "rust_todo_cli"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-flate2 = "1.0.24"
