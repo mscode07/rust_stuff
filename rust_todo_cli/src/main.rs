@@ -1,50 +1,58 @@
-use std :: {env,fs};
+use clap::{Parser, Subcommand};
+use std::{env, fs};
 use serde::{Serialize,Deserialize};
 
-#[derive(Serialize, Deserialize)]
-struct  Task{
-    title: String,
+#[derive(Parser)]
+#[command(name="todo")]
+struct Cli{
+    #[command(subcommand)]
+    command: Commands,
 }
 
-fn load_tasks()-> Vec<Task>{
-    let data: Result<String, std::io::Error> = fs :: read_to_string("tasks.json");
-    match data {
-        Ok(content)=>{
-            serde_json :: from_str(&content).unwrap_or(Vec::new())
-        }
-        Err(_)=> Vec::new(),
-    }
+#[derive(Subcommand)]
+enum Commands{
+    Add{task:String},
+    List
+}
+#[derive(Serialize,Deserialize)]
+struct Task{
+    Title: String,
 }
 
 fn save_tasks(tasks: &Vec<Task>){
     let data = serde_json::to_string(tasks).unwrap();
-    fs::write("task.json",data).expect("Unable to write file");
+    fs::write("task_.json", data).expect("Unable to write file");
+}
+
+fn load_tasks()->Vec<Task>{
+    let data = fs::read_to_string("task_.json");
+    match data {
+        Ok(content)=>{
+            serde_json ::from_str(&content).unwrap_or(Vec::new())
+        }
+        Err(_)=>Vec::new(),
+    }
 }
 
 fn main(){
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2{
-        println!("Usage: add/list");
-        return;
-    }
-    let command = &args[1];
+    let cli = Cli::parse();
+    let mut tasks=load_tasks();
 
-    let mut tasks = load_tasks();
-
-    if command == "add"{
-        if args.len()<3{
-            println!("Please provide a task!!");
-            return
+    match cli.command {
+        Commands::Add { task }=>{
+            tasks.push(Task{Title:task});
+            save_tasks(&tasks);
+            println!("Task added!!");
         }
-        let task = Task{
-            title: args[2].clone(),
-        };
-        tasks.push(task);
-        save_tasks(&tasks);
-        println!("Task Added!!")
-    } else if command == "list"{
-        for (i, task) in tasks.iter().enumerate(){
-            println!("{}: {}",i+1, task.title)
+
+        Commands::List=>{
+            if tasks.is_empty(){
+                println!("No task Found!!");
+            }else{
+                for (i, task) in tasks.iter().enumerate(){
+                    println!("{}:{}", i+1, task.Title)
+                }
+            }
         }
     }
 }
