@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use std::{env, fs};
+use std::{fs};
 use serde::{Serialize,Deserialize};
 
 #[derive(Parser)]
@@ -16,7 +16,7 @@ enum Commands{
 }
 #[derive(Serialize,Deserialize)]
 struct Task{
-    Title: String,
+    title: String,
 }
 
 fn save_tasks(tasks: &Vec<Task>){
@@ -40,7 +40,7 @@ fn main(){
 
     match cli.command {
         Commands::Add { task }=>{
-            tasks.push(Task{Title:task});
+            tasks.push(Task{title:task});
             save_tasks(&tasks);
             println!("Task added!!");
         }
@@ -50,7 +50,7 @@ fn main(){
                 println!("No task Found!!");
             }else{
                 for (i, task) in tasks.iter().enumerate(){
-                    println!("{}:{}", i+1, task.Title)
+                    println!("{}:{}", i+1, task.title)
                 }
             }
         }
