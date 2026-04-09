@@ -5,3 +5,5 @@ edition = "2024"
 
 [dependencies]
 clap={version="4", features=["derive"]}
+ssh-key = "0.6"
+rand = "0.8"
