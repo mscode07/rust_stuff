@@ -1,26 +1,44 @@
+mod cli;
+mod crypto;
 use clap::{Parser,Subcommand};
+use cli::commands;
+
 #[derive(Parser)]
-#[command(name="sshx")]
-#[command (about="Secure SSH Key manager",long_about=None)]
+#[command(name="SSHx")]
+#[command(about="Secure your kye",long_about=None)]
 
 struct Cli{
     #[command(subcommand)]
-    command: Commands
+    command:Commands,
 }
+
 #[derive(Subcommand)]
 enum Commands {
-    Generate{
-        #[arg(short,long)]
-        name:String,
+    Generate {
+        #[arg(short, long)]
+        name: String,
     },
     List,
-    Get{
-        name:String,
+    Get {
+        name: String,
         #[arg(long)]
-        public: bool
-    }
+        public: bool,
+    },
 }
-fn main() {
-    println!("Hello, world!");
-    println!("Testing");
+
+
+fn main(){
+    let cli = Cli::parse();
+
+    match cli.command {
+        Commands::Generate { name }=>{
+            commands::generate(name);
+        }
+        Commands::List=>{
+            commands::list();
+        }
+        Commands::Get { name, public }=>{
+            commands::get(name,public);
+        }
+    }
 }
