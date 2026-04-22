@@ -15,5 +15,4 @@ pub fn generate_ed25519_key(name: &str)->(String, String){
     let public_key_str = public_key.to_string();
 
     (private_key_str,public_key_str)
-
 }
