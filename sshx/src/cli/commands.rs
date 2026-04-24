@@ -1,13 +1,16 @@
 use crate::crypto::ssh;
+use crate::storage::vault;
+
 pub fn generate(name:String){
 println!("Generating the Key for {}",name);
 
 let(private_key,public_key) = ssh::generate_ed25519_key(&name);
-println!("\n Key Generated Successfully!");
 
-println!("🔓 Public Key:\n{}\n", public_key);
+vault::save_key(&name, &private_key, &public_key);
 
-println!("⚠️ Private Key (TEMP — not stored yet):\n{}\n", private_key);
+ println!("\n✅ Key saved successfully!");
+
+    println!("\n🔓 Public Key:\n{}\n", public_key);
 
 
 }
