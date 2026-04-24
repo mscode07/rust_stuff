@@ -2,6 +2,7 @@ mod cli;
 mod crypto;
 use clap::{Parser,Subcommand};
 use cli::commands;
+mod storage;
 
 #[derive(Parser)]
 #[command(name="SSHx")]
