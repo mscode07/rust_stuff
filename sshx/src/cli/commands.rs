@@ -16,13 +16,26 @@ vault::save_key(&name, &private_key, &public_key);
 }
 
 pub fn list(){
-    println!("Listing all the Keys.");
+    let keys = vault::list_keys();
+
+    if keys.is_empty(){
+        println!("No keys found");
+        return;
+    }
+    println!("Stored keys:\n");
+    
+    for key in keys{
+        println!("- {}",key);
+    }
 }
 
 pub fn get(name:String,public:bool){
-if public{
-    println!("Getting public key for {}",name);
-} else{
-    println!("Getting private key for {}",name);
+let key = vault::get_key((&name), public);
+
+println!("{}",key);
 }
+pub fn delete(name: String) {
+    vault::delete_key(&name);
+
+    println!("✅ Deleted key '{}'", name);
 }

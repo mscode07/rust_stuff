@@ -25,6 +25,9 @@ enum Commands {
         #[arg(long)]
         public: bool,
     },
+    Delete{
+        name: String,
+    }
 }
 
 
@@ -40,6 +43,9 @@ fn main(){
         }
         Commands::Get { name, public }=>{
             commands::get(name,public);
+        }
+        Commands::Delete { name } =>{
+            commands::delete(name);
         }
     }
 }
