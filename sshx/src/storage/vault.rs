@@ -78,8 +78,8 @@ pub fn delete_key (name: &str){
     let public_path = base_path.join(format!("{}.pub",name));
 
     if private_path.exists(){
-        fs::remove_file(private_path).expect("Faild to delete Private Key");;
-    }
+        fs::remove_file(private_path).expect("Faild to delete Private Key");
+    }   
 
     if public_path.exists(){
         fs::remove_file(public_path).expect("Failed To delete Public Key");
