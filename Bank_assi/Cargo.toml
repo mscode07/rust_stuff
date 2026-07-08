@@ -1,0 +1,6 @@
+[package]
+name = "Bank_assi"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
